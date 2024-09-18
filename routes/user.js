@@ -3,7 +3,9 @@ import User from "../models/user.js";
 import httpError from "../error.js";
 import {
     hashPassword,
-    newKey
+    newKey,
+    comparePassword,
+    generateToken
 } from "../controllers/user.js";
 
 const userRoutes = (app)=>{
@@ -70,7 +72,7 @@ const userRoutes = (app)=>{
         }
 
         if(!user) return httpError(res, 401, "User with this email doesn't exist");
-        if(!comparePass(user.password, req.body.password)){
+        if(!await comparePassword(user.password, req.body.password)){
             return httpError(res, 401, "Incorrect password");
         }
 
