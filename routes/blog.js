@@ -15,26 +15,27 @@ const blogRoutes = (app)=>{
             content: String (HTML)
             title: String,
             thumbnail: String (URL)
-            urlString: String
+            urlString: String (optional)
         }
      */
     app.post("/blog", auth("blog"), async (req, res)=>{
-        if(!validURLString(req.body.urlString)){
-            return httpError(res, 400, "Your URL may only contain letters, numbers or '-'");
+        if(req.body.urlString){
+            if(!validURLString(req.body.urlString)){
+                return httpError(res, 400, "Your URL may only contain letters, numbers or '-'");
+            }
+            const uniqueURL = await uniqueURLString(res.locals.user.site, req.body.urlString);
+            if(uniqueURL !== true) return httpError(res, uniqueURL.code, uniqueURL.message);
         }
-        const uniqueURL = await uniqueURLString(res.locals.user.site, req.body.urlString);
-        console.log(uniqueURL);
-        if(uniqueURL !== true) return httpError(res, uniqueURL.code, uniqueURL.message);
 
         const blog = new Blog({
             owner: res.locals.user._id,
             content: req.body.content,
             site: res.locals.user.site,
-            urlString: req.body.urlString,
             title: req.body.title,
             thumbnail: req.body.thumbnail,
             date: new Date()
         });
+        blog.urlString = req.body.urlString ? req.body.urlString : blog._id;
 
         await blog.save();
 
