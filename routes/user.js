@@ -1,11 +1,13 @@
 import User from "../models/user.js";
 
 import httpError from "../error.js";
+import auth from "../auth.js";
 import {
     hashPassword,
     newKey,
     comparePassword,
-    generateToken
+    generateToken,
+    responseUser
 } from "../controllers/user.js";
 
 const userRoutes = (app)=>{
@@ -79,6 +81,14 @@ const userRoutes = (app)=>{
         const token = generateToken(user);
 
         res.json({token: token});
+    });
+
+    /*
+        GET: get user data
+        response = User
+     */
+    app.get("/user/:userId", auth("self"), async (req, res)=>{
+        res.json(responseUser(res.locals.user));
     });
 }
 

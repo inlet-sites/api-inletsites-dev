@@ -21,7 +21,7 @@ const auth = (permissionRequired)=>{
 
         let user;
         try{
-            user = await User.findOne({_id: userData._id});
+            user = await User.findOne({_id: userData.id});
         }catch(e){
             console.error(e);
             return httpError(res, 500, "Internal server error (err-004)");

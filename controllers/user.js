@@ -21,9 +21,18 @@ const generateToken = (user)=>{
     }, process.env.JWT_SECRET);
 }
 
+const responseUser = (user)=>{
+    return {
+        name: user.name,
+        email: user.email,
+        permissions: user.permissions
+    };
+}
+
 export {
     hashPassword,
     newKey,
     comparePassword,
-    generateToken
+    generateToken,
+    responseUser
 };
