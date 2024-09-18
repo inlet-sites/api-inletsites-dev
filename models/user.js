@@ -10,7 +10,11 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     password: String,
-    permissions: [String]
+    permissions: [String],
+    key: {
+        type: String,
+        required: true
+    }
 });
 
 export default mongoose.model("user", UserSchema);
