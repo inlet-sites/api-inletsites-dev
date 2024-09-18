@@ -2,7 +2,8 @@ import User from "../models/user.js";
 
 import httpError from "../error.js";
 import {
-    hashPassword
+    hashPassword,
+    newKey
 } from "../controllers/user.js";
 
 const userRoutes = (app)=>{
@@ -38,6 +39,7 @@ const userRoutes = (app)=>{
         }
 
         user.password = await hashPassword(req.body.password);
+        user.key = newKey();
 
         try{
             await user.save();
