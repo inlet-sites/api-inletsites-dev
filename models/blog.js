@@ -11,7 +11,15 @@ const BlogSchema  = new mongoose.Schema({
     },
     site: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        index: true
+    },
+    urlString: {
+        type: String,
+        required: true,
+        unique: true,
+        index: true
     },
     title: {
         type: String,

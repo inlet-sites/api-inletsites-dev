@@ -17,6 +17,8 @@ app.use(cors());
 
 import userRoutes from "./routes/user.js";
 userRoutes(app);
+import blogRoutes from "./routes/blog.js";
+blogRoutes(app);
 
 if(process.env.NODE_ENV !== "production"){
     app.listen(8000);
