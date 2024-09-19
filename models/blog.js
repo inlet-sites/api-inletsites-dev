@@ -1,25 +1,25 @@
 import mongoose from "mongoose";
 
 const BlogSchema  = new mongoose.Schema({
-    owner: {
+    site: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        index: true,
+        unique: false
+    },
+    author: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
+    },
+    url: {
+        type: String,
+        required: true,
+        index: true,
+        unique: false
     },
     content: {
         type: String,
         required: true
-    },
-    site: {
-        type: String,
-        required: true,
-        unique: false,
-        index: true
-    },
-    urlString: {
-        type: String,
-        required: true,
-        unique: false,
-        index: true
     },
     title: {
         type: String,

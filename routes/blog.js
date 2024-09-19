@@ -12,8 +12,9 @@ const blogRoutes = (app)=>{
     /*
         POST: create a new blog for user website
         req.body = {
+            site: String (ID)
             content: String (HTML)
-            title: String,
+            title: String
             thumbnail: String (URL)
             urlString: String (optional)
         }
@@ -28,7 +29,8 @@ const blogRoutes = (app)=>{
         }
 
         const blog = new Blog({
-            owner: res.locals.user._id,
+            site: req.body.site,
+            author: res.locals.user._id,
             content: req.body.content,
             site: res.locals.user.site,
             title: req.body.title,
@@ -40,6 +42,13 @@ const blogRoutes = (app)=>{
         await blog.save();
 
         res.json(responseBlog(blog));
+    });
+
+    /*
+        GET: retrieve a single blog
+        response = Blog
+     */
+    app.get("/blog/:site/url/:url", async (req, res)=>{
     });
 }
 
