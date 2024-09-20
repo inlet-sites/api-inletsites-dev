@@ -49,7 +49,7 @@ const blogRoutes = (app)=>{
      */
     app.get("/blog/:url/site/:site", async (req, res)=>{
         const blog = await Blog.findOne({site: req.params.site, url: req.params.url});
-        res.json(blog);
+        res.json(responseBlog(blog));
     });
 
     /*
@@ -68,6 +68,46 @@ const blogRoutes = (app)=>{
             }
         );
         res.json(blogs);
+    });
+
+    /*
+        PUT: Update blog data
+        req.body = {
+            url: String (optional)
+            content: String (optional)
+            title: String (optional)
+            thumbnail: String (optional)
+        }
+     */
+    app.put("/blog/:blog", auth("blog"), async (req, res)=>{
+        let blog;
+        try{
+            blog = await Blog.findOne({_id: req.params.blog});
+        }catch(e){
+            console.error(e);
+            return httpError(res, 500, "Internal server error (err-005)");
+        }
+
+        if(blog.author.toString() !== res.locals.user._id.toString()){
+            return httpError(res, 403, "Unauthorized access");
+        }
+
+        if(req.body.url){
+            if(!validURL(req.body.url)){
+                return httpError(res, 400, "Your URL may only contain letters, numbers or '-'");
+            }
+            const isUnique = await uniqueURL(blog.site, req.body.url);
+            if(isUnique !== true) return httpError(res, isUnique.code, isUnique.message);
+            blog.url = req.body.url
+        }
+
+        if(req.body.content) blog.content = req.body.content;
+        if(req.body.title) blog.title = req.body.title;
+        if(req.body.thumbnail) blog.thumbnail = req.body.thumbnail;
+
+        await blog.save();
+
+        res.json(responseBlog);
     });
 }
 
