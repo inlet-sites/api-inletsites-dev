@@ -3,6 +3,7 @@ import Blog from "../models/blog.js";
 import auth from "../auth.js";
 import httpError from "../error.js";
 import {
+    blogAuth,
     responseBlog,
     validURL,
     uniqueURL
@@ -19,7 +20,10 @@ const blogRoutes = (app)=>{
             url: String (optional)
         }
      */
-    app.post("/blog", auth("blog"), async (req, res)=>{
+    app.post("/blog", auth, async (req, res)=>{
+        const site = await blogAuth(req.body.site, res.locals.user._id.toString());
+        if(site.error) return httpError(res, site.code, site.message);
+
         if(req.body.url){
             if(!validURL(req.body.url)){
                 return httpError(res, 400, "Your URL may only contain letters, numbers or '-'");
@@ -73,13 +77,14 @@ const blogRoutes = (app)=>{
     /*
         PUT: Update blog data
         req.body = {
+            site: String (ID)
             url: String (optional)
             content: String (optional)
             title: String (optional)
             thumbnail: String (optional)
         }
      */
-    app.put("/blog/:blog", auth("blog"), async (req, res)=>{
+    app.put("/blog/:blog", auth, async (req, res)=>{
         let blog;
         try{
             blog = await Blog.findOne({_id: req.params.blog});
@@ -88,8 +93,11 @@ const blogRoutes = (app)=>{
             return httpError(res, 500, "Internal server error (err-005)");
         }
 
+        const site = await blogAuth(blog.site, res.locals.user._id.toString());
+        if(site.error) return httpError(res, site.code, site.message);
+
         if(blog.author.toString() !== res.locals.user._id.toString()){
-            return httpError(res, 403, "Unauthorized access");
+            return httpError(res, 403, "Only the owner can update this blog");
         }
 
         if(req.body.url){
@@ -114,7 +122,7 @@ const blogRoutes = (app)=>{
         DELETE: Delete a blog
         response = {success: true}
      */
-    app.delete("/blog/:blog", auth("blog"), async (req, res)=>{
+    app.delete("/blog/:blog", auth, async (req, res)=>{
         let blog;
         try{
             blog = await Blog.findOne({_id: req.params.blog});
@@ -122,6 +130,9 @@ const blogRoutes = (app)=>{
             console.error(e);
             return httpError(res, 500, "Internal server error (err-006)");
         }
+
+        const site = await blogAuth(blog.site, res.locals.user._id.toString());
+        if(site.error) return httpError(res, site.code, site.message);
 
         if(blog.author.toString() !== res.locals.user._id.toString()){
             return httpError(res, 403, "Unauthorized access");

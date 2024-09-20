@@ -5,6 +5,7 @@ const SiteSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    permissions: [String],
     owners: {
         type: [mongoose.Schema.Types.ObjectId],
         required: true,

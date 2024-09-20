@@ -10,11 +10,6 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     password: String,
-    sites: {
-        type: [mongoose.Schema.Types.ObjectId],
-        required: true
-    },
-    permissions: [String],
     key: {
         type: String,
         required: true

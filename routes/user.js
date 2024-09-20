@@ -87,7 +87,7 @@ const userRoutes = (app)=>{
         GET: get user data
         response = User
      */
-    app.get("/user/:userId", auth("self"), async (req, res)=>{
+    app.get("/user/:userId", auth, async (req, res)=>{
         res.json(responseUser(res.locals.user));
     });
 }
