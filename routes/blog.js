@@ -107,7 +107,7 @@ const blogRoutes = (app)=>{
 
         await blog.save();
 
-        res.json(responseBlog);
+        res.json(responseBlog(blog));
     });
 }
 
