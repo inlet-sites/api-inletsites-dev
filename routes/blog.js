@@ -24,7 +24,7 @@ const blogRoutes = (app)=>{
             if(!validURL(req.body.url)){
                 return httpError(res, 400, "Your URL may only contain letters, numbers or '-'");
             }
-            const isUnique = await uniqueURL(res.locals.user.site, req.body.url);
+            const isUnique = await uniqueURL(req.body.site, req.body.url);
             if(isUnique !== true) return httpError(res, isUnique.code, isUnique.message);
         }
 
