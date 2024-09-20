@@ -109,6 +109,28 @@ const blogRoutes = (app)=>{
 
         res.json(responseBlog(blog));
     });
+
+    /*
+        DELETE: Delete a blog
+        response = {success: true}
+     */
+    app.delete("/blog/:blog", auth("blog"), async (req, res)=>{
+        let blog;
+        try{
+            blog = await Blog.findOne({_id: req.params.blog});
+        }catch(e){
+            console.error(e);
+            return httpError(res, 500, "Internal server error (err-006)");
+        }
+
+        if(blog.author.toString() !== res.locals.user._id.toString()){
+            return httpError(res, 403, "Unauthorized access");
+        }
+
+        await Blog.deleteOne({_id: blog._id});
+
+        res.json({success: true});
+    });
 }
 
 export default blogRoutes;
