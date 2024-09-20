@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
     sites: {
         type: [mongoose.Schema.Types.ObjectId],
         required: true
-    }
+    },
     permissions: [String],
     key: {
         type: String,

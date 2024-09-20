@@ -25,8 +25,7 @@ const responseUser = (user)=>{
     return {
         name: user.name,
         email: user.email,
-        permissions: user.permissions,
-        site: user.site
+        permissions: user.permissions
     };
 }
 

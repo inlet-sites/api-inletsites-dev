@@ -2,6 +2,9 @@ import Blog from "../models/blog.js";
 
 const responseBlog = (blog)=>{
     return {
+        site: blog.site,
+        author: blog.author,
+        url: blog.url,
         content: blog.content,
         title: blog.title,
         thumbnail: blog.thumbnail,
@@ -9,14 +12,14 @@ const responseBlog = (blog)=>{
     };
 }
 
-const validURLString = (url)=>{
+const validURL = (url)=>{
     return url.match(/^[0-9a-z\-]+$/);
 }
 
-const uniqueURLString = async (site, url)=>{
+const uniqueURL = async (site, url)=>{
     let blog;
     try{
-        blog = await Blog.findOne({site: site, urlString: url});
+        blog = await Blog.findOne({site: site, url: url});
     }catch(e){
         console.error(e);
         return {
@@ -34,6 +37,6 @@ const uniqueURLString = async (site, url)=>{
 
 export {
     responseBlog,
-    validURLString,
-    uniqueURLString
+    validURL,
+    uniqueURL
 };

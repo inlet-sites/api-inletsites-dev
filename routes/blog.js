@@ -4,8 +4,8 @@ import auth from "../auth.js";
 import httpError from "../error.js";
 import {
     responseBlog,
-    validURLString,
-    uniqueURLString
+    validURL,
+    uniqueURL
 } from "../controllers/blog.js";
 
 const blogRoutes = (app)=>{
@@ -16,28 +16,27 @@ const blogRoutes = (app)=>{
             content: String (HTML)
             title: String
             thumbnail: String (URL)
-            urlString: String (optional)
+            url: String (optional)
         }
      */
     app.post("/blog", auth("blog"), async (req, res)=>{
-        if(req.body.urlString){
-            if(!validURLString(req.body.urlString)){
+        if(req.body.url){
+            if(!validURL(req.body.url)){
                 return httpError(res, 400, "Your URL may only contain letters, numbers or '-'");
             }
-            const uniqueURL = await uniqueURLString(res.locals.user.site, req.body.urlString);
-            if(uniqueURL !== true) return httpError(res, uniqueURL.code, uniqueURL.message);
+            const isUnique = await uniqueURL(res.locals.user.site, req.body.url);
+            if(isUnique !== true) return httpError(res, isUnique.code, isUnique.message);
         }
 
         const blog = new Blog({
             site: req.body.site,
             author: res.locals.user._id,
             content: req.body.content,
-            site: res.locals.user.site,
             title: req.body.title,
             thumbnail: req.body.thumbnail,
             date: new Date()
         });
-        blog.urlString = req.body.urlString ? req.body.urlString : blog._id;
+        blog.url= req.body.url? req.body.url : blog._id;
 
         await blog.save();
 
@@ -48,8 +47,6 @@ const blogRoutes = (app)=>{
         GET: retrieve a single blog
         response = Blog
      */
-    app.get("/blog/:site/url/:url", async (req, res)=>{
-    });
 }
 
 export default blogRoutes;

@@ -28,11 +28,11 @@ const userRoutes = (app)=>{
             return httpError(res, 500, "Internal server error (err-001)");
         }
 
+        if(user.password) return httpError(res, 403, "Account already activated");
+
         if(user.key !== req.params.userKey){
             return httpError(res, 401, "Unauthorized");
         }
-
-        if(user.password) return httpError(res, 403, "Account already activated");
 
         if(req.body.password.length < 12){
             return httpError(res, 400, "Password must contain at least 12 characters");

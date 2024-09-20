@@ -8,6 +8,8 @@ const SiteSchema = new mongoose.Schema({
     owners: {
         type: [mongoose.Schema.Types.ObjectId],
         required: true,
+        index: true,
+        unique: false
     }
 });
 
