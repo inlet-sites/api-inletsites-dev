@@ -47,6 +47,10 @@ const blogRoutes = (app)=>{
         GET: retrieve a single blog
         response = Blog
      */
+    app.get("/blog/:url/site/:site", async (req, res)=>{
+        const blog = await Blog.findOne({site: req.params.site, url: req.params.url});
+        res.json(blog);
+    });
 }
 
 export default blogRoutes;
