@@ -87,6 +87,7 @@ article{
         <a class="headSub" href="#getToken">Get Token</a>
         <a class="headSub" href="#getUser">Get User</a>
         <a class="headMain" href="#album">Album</a>
+        <a class="headSub" href="#createAlbum">Create Album</a>
     </header>
 
     <article>
@@ -231,6 +232,26 @@ article{
                 <p class="name">created</p>
                 <p class="type">date</p>
                 <p class="propDesc">Date/Time album was created</p>
+            </div>
+        </div>
+
+        <div id="createAlbum" class="route">
+            <h1>Create Album</h1>
+            <p class="url">POST /album</p>
+            <p>User Auth Required</p>
+            <p class="description">Create a new user album</p>
+
+            <h3>Request Body</h3>
+            <div class="prop">
+                <p class="name">name</p>
+                <p class="type">string</p>
+                <p class="propDesc">Name for the album</p>
+            </div>
+
+            <div class="prop">
+                <p class="name">description</p>
+                <p class="type">string (optional)</p>
+                <p class="propDesc">Optional description of the album</p>
             </div>
         </div>
     </article>

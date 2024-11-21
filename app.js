@@ -5,6 +5,7 @@ import cors from "cors";
 
 import userRoutes from "./routes/user.js";
 import blogRoutes from "./routes/blog.js";
+import albumRoutes from "./routes/album.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors());
 
 userRoutes(app);
 blogRoutes(app);
+albumRoutes(app);
 
 app.get("/", (req, res)=>{res.sendFile(`${import.meta.dirname}/api.html`)});
 
