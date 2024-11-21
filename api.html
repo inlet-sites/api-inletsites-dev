@@ -86,6 +86,7 @@ article{
         <a class="headSub" href="#createPassword">Create Password</a>
         <a class="headSub" href="#getToken">Get Token</a>
         <a class="headSub" href="#getUser">Get User</a>
+        <a class="headMain" href="#album">Album</a>
     </header>
 
     <article>
@@ -176,6 +177,60 @@ article{
                 <p class="name">N/A</p>
                 <p class="type"><a href="#user">User</a></p>
                 <p class="propDesc">User object</p>
+            </div>
+        </div>
+
+        <div id="album" class="route">
+            <h1>Album</h1>
+            <p class="description">User album containing a grouping of photos</p>
+
+            <h3>Properties</h3>
+            <div class="prop">
+                <p class="name">name</p>
+                <p class="type">string</p>
+                <p class="propDesc">Name of the album</p>
+            </div>
+
+            <div class="prop">
+                <p class="name">user</p>
+                <p class="type">string</p>
+                <p class="propDesc">ID of the user to which the album belongs</p>
+            </div>
+
+            <div class="prop">
+                <p class="name">description</p>
+                <p class="type">string</p>
+                <p class="propDesc">A description of the album</p>
+            </div>
+
+            <div class="prop">
+                <p class="name">photos</p>
+                <p class="type">[object]</p>
+                <p class="propDesc">An array of objects that contain data for album photographs</p>
+            </div>
+
+            <div class="prop">
+                <p class="name">photos.file</p>
+                <p class="type">string</p>
+                <p class="propDesc">File name of the file for lookup</p>
+            </div>
+
+            <div class="prop">
+                <p class="name">photos.description</p>
+                <p class="type">string</p>
+                <p class="propDesc">Description of the photo</p>
+            </div>
+
+            <div class="prop">
+                <p class="name">photos.created</p>
+                <p class="type">date</p>
+                <p class="propDesc">Date/Time photo was added to album</p>
+            </div>
+
+            <div class="prop">
+                <p class="name">created</p>
+                <p class="type">date</p>
+                <p class="propDesc">Date/Time album was created</p>
             </div>
         </div>
     </article>
