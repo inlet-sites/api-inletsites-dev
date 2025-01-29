@@ -26,9 +26,17 @@ const AlbumSchema = new mongoose.Schema({
         created: {
             type: Date,
             required: true
+        },
+        lastUpdated: {
+            type: Date,
+            required: true
         }
     }],
     created: {
+        type: Date,
+        required: true
+    },
+    lastUpdated: {
         type: Date,
         required: true
     }

@@ -87,7 +87,8 @@ article{
         <a class="headSub" href="#getToken">Get Token</a>
         <a class="headSub" href="#getUser">Get User</a>
         <a class="headMain" href="#album">Album</a>
-        <a class="headSub" href="#createAlbum">Create Album</a>
+        <a class="headSub" href="#createAlbum">Create</a>
+        <a class="headSub" href="#updateAlbum">Update</a>
     </header>
 
     <article>
@@ -252,6 +253,33 @@ article{
                 <p class="name">description</p>
                 <p class="type">string (optional)</p>
                 <p class="propDesc">Optional description of the album</p>
+            </div>
+        </div>
+
+        <div id="updateAlbum" class="route">
+            <h1>Update Album</h1>
+            <p class="url">PUT /album/:albumId</p>
+            <p>User Auth Required (Album)</p>
+            <p class="description">Update an album name or description</p>
+
+            <h3>Request Body</h3>
+            <div class="prop">
+                <p class="name">name</p>
+                <p class="type">String (optional)</p>
+                <p class="propDesc">New name for the album</p>
+            </div>
+
+            <div class="prop">
+                <p class="name">description</p>
+                <p class="type">String (optional)</p>
+                <p class="propDesc">New description for the album</p>
+            </div>
+
+            <h3>Response Body</h3>
+            <div class="prop">
+                <p class="name">N/A</p>
+                <p class="type"><a href="#album">Album</a></p>
+                <p class="propDesc">Album object</p>
             </div>
         </div>
     </article>
