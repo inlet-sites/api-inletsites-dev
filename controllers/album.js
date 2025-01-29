@@ -23,6 +23,18 @@ const updateRoute = async (req, res, next)=>{
 }
 
 /*
+ Retrieve an album with the ID
+
+ @param {String} id - ID of the album
+ @return {Album} - Album object
+ */
+const getAlbum = async (id)=>{
+    const album = await Album.findOne({_id: id});
+    if(!album) throw new HttpError(400, "No album with this ID");
+    return album;
+}
+
+/*
  Create a new Album with no images
  
  @param {Object} data - Body object containing data
