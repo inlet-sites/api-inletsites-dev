@@ -1,7 +1,10 @@
 import Album from "../models/album.js";
 
+import validate from "../validation/album.js";
+
 const createRoute = async (req, res, next)=>{
     try{
+        validate(req.body);
         const album = createAlbum(req.body, res.locals.user._id);
         await album.save();
         res.json(responseAlbum(album));
@@ -10,7 +13,12 @@ const createRoute = async (req, res, next)=>{
 
 const updateRoute = async (req, res, next)=>{
     try{
-        return null;
+        validate(req.body);
+        let album = await getAlbum(req.params.albumId);
+        verifyOwnership(user, album);
+        album = updateAlbum(album, req.body);
+        await album.save();
+        res.json(album);
     }catch(e){next(e)}
 }
 
