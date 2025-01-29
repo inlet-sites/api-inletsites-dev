@@ -23,6 +23,28 @@ const createPasswordRoute = async (req, res, next)=>{
     }catch(e){next(e)}
 }
 
+const getTokenRoute = async (req, res, next)=>{
+    try{
+        const email = req.body.email.toLowerCase();
+        const user = await getUserByEmail(email);
+        await comparePassword(user.password, req.body.password);
+        const token = generateToken(user);
+        res.json({token: token});
+    }catch(e){next(e)}
+}
+
+/*
+ Retrieve user from data by their email
+
+ @param {String} email - User email
+ @return {User} User object
+ */
+const getUserByEmail = async (email)=>{
+    const user = await User.findOne({email: email});
+    if(!user) throw new HttpError(401, "User with this email doesn't exist");
+    return user;
+}
+
 /*
  Compare user key to an input key
  Throw error if they don't match
@@ -42,8 +64,16 @@ const newKey = ()=>{
     return crypto.randomUUID();
 }
 
+/*
+ Check input password to DB hashed pass
+ Throw error if they don't match
+
+ @param {String} hash - Hashed password from the database
+ @param {String} password - User input password
+ */
 const comparePassword = async (hash, password)=>{
-    return await bcrypt.compare(password, hash);
+    const result = await bcrypt.compare(password, hash);
+    if(result !== true) throw new HttpError(401, "Incorrect password");
 }
 
 const generateToken = (user)=>{
@@ -63,6 +93,7 @@ const responseUser = (user)=>{
 
 export {
     createPasswordRoute,
+    getTokenRoute,
 
     hashPassword,
     newKey,
