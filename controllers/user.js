@@ -59,10 +59,21 @@ const compareKey = (key, compareKey)=>{
     if(key !== compareKey) throw new HttpError(401, "Unauthorized");
 }
 
+/*
+ Create hash from a password
+
+ @param {String} password - Password to hash
+ @return {String} Hashed password
+ */
 const hashPassword = async (password)=>{
     return await bcrypt.hash(password, 10);
 }
 
+/*
+ Generate a new UUID
+
+ @return {String} New UUID
+ */
 const newKey = ()=>{
     return crypto.randomUUID();
 }
@@ -79,6 +90,12 @@ const comparePassword = async (hash, password)=>{
     if(result !== true) throw new HttpError(401, "Incorrect password");
 }
 
+/*
+ Create a user token for auth
+
+ @param {User} user - User object
+ @return {String} Generated token
+ */
 const generateToken = (user)=>{
     return jwt.sign({
         id: user._id,
@@ -86,6 +103,12 @@ const generateToken = (user)=>{
     }, process.env.JWT_SECRET);
 }
 
+/*
+ Create the user for sending to the frontend
+
+ @param {User} user - User object
+ @return {Object} Response object resembling the user
+ */
 const responseUser = (user)=>{
     return {
         name: user.name,
