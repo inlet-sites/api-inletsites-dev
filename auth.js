@@ -40,7 +40,6 @@ const getUser = async (id, key)=>{
  @param {[String]} has - Permissions for this user
  */
 const checkPermissions = (needs, has)=>{
+    if(!needs) return;
     if(!has.includes(needs)) throw new HttpError(403, "Invalid permissions");
 }
-
-export default auth;

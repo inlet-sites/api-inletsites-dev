@@ -1,7 +1,7 @@
 import {HttpError} from "../HttpError.js";
 
 export default (data)=>{
-    if(data.password) password(data.password, data.comparePassword);
+    if(data.password) password(data.password, data.confirmPassword);
 }
 
 const password = (pass, comparePass)=>{
