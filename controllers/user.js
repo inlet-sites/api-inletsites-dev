@@ -1,6 +1,5 @@
 import User from "../models/user.js";
 
-
 import {HttpError} from "../HttpError.js";
 import validate from "../validation/user.js";
 import bcrypt from "bcrypt";
@@ -31,6 +30,10 @@ const getTokenRoute = async (req, res, next)=>{
         const token = generateToken(user);
         res.json({token: token});
     }catch(e){next(e)}
+}
+
+const getUserRoute = (req, res, next)=>{
+    res.json(responseUser(res.locals.user));
 }
 
 /*
@@ -94,10 +97,5 @@ const responseUser = (user)=>{
 export {
     createPasswordRoute,
     getTokenRoute,
-
-    hashPassword,
-    newKey,
-    comparePassword,
-    generateToken,
-    responseUser
-};
+    getUserRoute
+}
