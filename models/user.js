@@ -13,7 +13,8 @@ const UserSchema = new mongoose.Schema({
     key: {
         type: String,
         required: true
-    }
+    },
+    permissions: [String]
 });
 
 export default mongoose.model("user", UserSchema);

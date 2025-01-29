@@ -1,31 +1,46 @@
 import User from "./models/user.js";
 
-import httpError from "./error.js";
+import {catchError, HttpError} from "./HttpError.js";
 import jwt from "jsonwebtoken";
 
-const auth = async (req, res, next)=>{
-    let userData;
-    try{
-        const [bearer, token] = req.headers.authorization.split(" ");
-        if(bearer !== "Bearer") return httpError(res, 401, "Unauthorized");
-        userData = jwt.verify(token, process.env.JWT_SECRET);
-    }catch(e){
-        return httpError(res, 401, "Unauthorized");
+export default (requiredPermission)=>{
+    return async (req, res, next)=>{
+        try{
+            const [bearer, token] = req.headers.authorization.split(" ");
+            if(bearer !== "Bearer") throw new HttpError(401, "Unauthorized");
+            const userData = jwt.verify(token, process.env.JWT_SECRET);
+            res.locals.user = await getUser(userData.id, userData.key);
+            checkPermissions(requiredPermission, res.locals.user.permissions);
+            next();
+        }catch(e){
+            catchError(e, req, res, next);
+        }
     }
+}
 
-    let user;
-    try{
-        user = await User.findOne({_id: userData.id});
-    }catch(e){
-        console.error(e);
-        return httpError(res, 500, "Internal server error (err-004)");
-    }
+/*
+ Gets the user
+ Throw error if bad id or key
 
-    if(!user) return httpError(res, 401, "Unauthorized");
-    if(user.key !== userData.key) return httpError(res, 403, "Expired token");
+ @param {String} id - ID of user to verify
+ @param {String} key - Key of user to verify
+ @return {User} - User object
+ */
+const getUser = async (id, key)=>{
+    const user = await User.findOne({_id: id});
+    if(!user) throw new HttpError(401, "Unauthorized");
+    if(user.key !== key) throw new HttpError(403, "Expired token");
+    return user;
+}
 
-    res.locals.user = user;
-    next();
+/*
+ Throw error is user does not have permissions for this route
+
+ @param {String} needs - String representing the required permission
+ @param {[String]} has - Permissions for this user
+ */
+const checkPermissions = (needs, has)=>{
+    if(!has.includes(needs)) throw new HttpError(403, "Invalid permissions");
 }
 
 export default auth;
