@@ -18,7 +18,7 @@ const updateRoute = async (req, res, next)=>{
         verifyOwnership(res.locals.user, album);
         album = updateAlbum(album, req.body);
         await album.save();
-        res.json(album);
+        res.json(responseAlbum(album));
     }catch(e){next(e)}
 }
 
@@ -58,6 +58,7 @@ const updateAlbum = (album, data)=>{
     if(data.description) album.description = data.description;
     return album;
 }
+
 /*
  Create a new Album with no images
  
@@ -83,6 +84,7 @@ const createAlbum = (data, userId)=>{
  */
 const responseAlbum = (album)=>{
     return {
+        id: album._id.toString(),
         name: album.name,
         description: album.description,
         photos: album.photos,
