@@ -15,7 +15,7 @@ const updateRoute = async (req, res, next)=>{
     try{
         validate(req.body);
         let album = await getAlbum(req.params.albumId);
-        verifyOwnership(user, album);
+        verifyOwnership(res.locals.user, album);
         album = updateAlbum(album, req.body);
         await album.save();
         res.json(album);
@@ -34,6 +34,17 @@ const getAlbum = async (id)=>{
     return album;
 }
 
+/*
+ Throw error if the album is not owned by the user
+
+ @param {User} user - User object
+ @param {Album} album - Album object
+ */
+const verifyOwnership = (user, album)=>{
+    if(user._id.toString() !== album.user.toString()){
+        throw new HttpError(403, "Forbidden");
+    }
+}
 /*
  Create a new Album with no images
  
