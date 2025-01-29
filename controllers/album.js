@@ -45,6 +45,19 @@ const verifyOwnership = (user, album)=>{
         throw new HttpError(403, "Forbidden");
     }
 }
+
+/*
+ Update album data
+
+ @param {Album} album - Album object
+ @param {Object} data - Object containing album data to be updated
+ @return {Album} - Album object
+ */
+const updateAlbum = (album, data)=>{
+    if(data.name) album.name = data.name;
+    if(data.description) album.description = data.description;
+    return album;
+}
 /*
  Create a new Album with no images
  
