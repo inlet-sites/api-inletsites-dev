@@ -89,6 +89,7 @@ article{
         <a class="headMain" href="#album">Album</a>
         <a class="headSub" href="#createAlbum">Create</a>
         <a class="headSub" href="#updateAlbum">Update</a>
+        <a class="headSub" href="#deleteAlbum">Delete</a>
     </header>
 
     <article>
@@ -280,6 +281,20 @@ article{
                 <p class="name">N/A</p>
                 <p class="type"><a href="#album">Album</a></p>
                 <p class="propDesc">Album object</p>
+            </div>
+        </div>
+
+        <div id="deleteAlbum" class="route">
+            <h1>Delete Album</h1>
+            <p class="url">DELETE /album/:albumId</p>
+            <p>User Auth Required (Album)</p>
+            <p class="description">Delete an album and all of its photos</p>
+
+            <h3>Response Body</h3>
+            <div class="prop">
+                <p class="name">success</p>
+                <p class="type">true</p>
+                <p class="propDesc">Always '{success: true}' if no error.</p>
             </div>
         </div>
     </article>
