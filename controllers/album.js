@@ -1,6 +1,7 @@
 import Album from "../models/album.js";
 
 import validate from "../validation/album.js";
+import {unlink} from "node:fs/promises";
 
 const createRoute = async (req, res, next)=>{
     try{
@@ -19,6 +20,16 @@ const updateRoute = async (req, res, next)=>{
         album = updateAlbum(album, req.body);
         await album.save();
         res.json(responseAlbum(album));
+    }catch(e){next(e)}
+}
+
+const deleteRoute = async (req, res, next)=>{
+    try{
+        const album = await getAlbum(req.params.albumId);
+        verifyOwnership(res.locals.user, album);
+        deletePhotos(album);
+        await Album.deleteOne({_id: album._id});
+        res.json({success: true});
     }catch(e){next(e)}
 }
 
@@ -60,6 +71,22 @@ const updateAlbum = (album, data)=>{
 }
 
 /*
+ Delete all photos from an album
+
+ @param {Album} album = Album object
+ */
+const deletePhotos = (album)=>{
+    try{
+        for(let i = 0; i < album.photos.length; i++){
+            unlink(`${global.cwd}/documents/${album.photos[i].file}`);
+        }
+    }catch(e){
+        console.error(e);
+        console.error(album.photos);
+    }
+}
+
+/*
  Create a new Album with no images
  
  @param {Object} data - Body object containing data
@@ -95,5 +122,6 @@ const responseAlbum = (album)=>{
 
 export {
     createRoute,
-    updateRoute
+    updateRoute,
+    deleteRoute
 }

@@ -10,6 +10,7 @@ import blogRoutes from "./routes/blog.js";
 import albumRoutes from "./routes/album.js";
 
 const app = express();
+global.cwd = `${import.meta.dirname}`;
 
 let mongoString = "mongodb://127.0.0.1/inletsites";
 if(process.env.NODE_ENV === "production"){
