@@ -10,7 +10,7 @@ import {
 const albumRoutes = (app)=>{
     app.post("/album", auth("album"), createRoute);
     //update album
-    app.put("/ablum/:albumId", auth("album"), updateRoute);
+    app.put("/album/:albumId", auth("album"), updateRoute);
     //remove album
     //add images
     //remove images

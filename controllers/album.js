@@ -3,8 +3,8 @@ import Album from "../models/album.js";
 const createRoute = async (req, res, next)=>{
     try{
         const album = createAlbum(req.body, res.locals.user._id);
-        album.save();
-        res.json(album);
+        await album.save();
+        res.json(responseAlbum(album));
     }catch(e){next(e)}
 }
 
@@ -26,8 +26,25 @@ const createAlbum = (data, userId)=>{
         user: userId,
         description: data.description,
         photos: [],
-        created: new Date()
+        created: new Date(),
+        lastUpdated: new Date()
     });
+}
+
+/*
+ Create an album object that is sent to the frontend
+
+ @param {Album} album - Album Object
+ @param {Object} - Object resembling album for the frontend
+ */
+const responseAlbum = (album)=>{
+    return {
+        name: album.name,
+        description: album.description,
+        photos: album.photos,
+        created: album.created,
+        lastUpdated: album.lastUpdated
+    };
 }
 
 export {
