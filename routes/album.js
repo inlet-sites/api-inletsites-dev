@@ -1,6 +1,7 @@
 import Album from "../models/album.js";
 
 import httpError from "../error.js";
+import {HttpError} from "../HttpError.js";
 import auth from "../auth.js";
 import {
     createAlbum
@@ -8,16 +9,11 @@ import {
 
 const albumRoutes = (app)=>{
     app.post("/album", auth, async (req, res)=>{
-        const album = createAlbum(req.body, res.locals.user._id);
-
         try{
+            const album = createAlbum(req.body, res.locals.user._id);
             album.save();
-        }catch(e){
-            console.error(e);
-            return httpError(res, 500, "Internal server error (err-001)");
-        }
-
-        res.json(album);
+            res.json(album);
+        }catch(e){next(e)}
     });
 }
 

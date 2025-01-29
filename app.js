@@ -3,6 +3,8 @@ import compression from "compression";
 import mongoose from "mongoose";
 import cors from "cors";
 
+import {catchError} from "./HttpError.js";
+
 import userRoutes from "./routes/user.js";
 import blogRoutes from "./routes/blog.js";
 import albumRoutes from "./routes/album.js";
@@ -22,6 +24,8 @@ app.use(cors());
 userRoutes(app);
 blogRoutes(app);
 albumRoutes(app);
+
+app.use(catchError);
 
 app.get("/", (req, res)=>{res.sendFile(`${import.meta.dirname}/api.html`)});
 
