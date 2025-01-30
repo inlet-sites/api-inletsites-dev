@@ -2,6 +2,7 @@ import express from "express";
 import compression from "compression";
 import mongoose from "mongoose";
 import cors from "cors";
+import fileUpload from "express-fileupload";
 
 import {catchError} from "./HttpError.js";
 
@@ -21,6 +22,7 @@ mongoose.connect(mongoString);
 app.use(compression());
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload({limits: {fileSize: 15 * 1024 * 1024}}));
 
 userRoutes(app);
 blogRoutes(app);

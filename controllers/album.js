@@ -2,6 +2,8 @@ import Album from "../models/album.js";
 
 import validate from "../validation/album.js";
 import {unlink} from "node:fs/promises";
+import sharp from "sharp";
+import crypto from "crypto";
 
 const createRoute = async (req, res, next)=>{
     try{
@@ -30,6 +32,16 @@ const deleteRoute = async (req, res, next)=>{
         deletePhotos(album);
         await Album.deleteOne({_id: album._id});
         res.json({success: true});
+    }catch(e){next(e)}
+}
+
+const addImagesRoute = async (req, res, next)=>{
+    try{
+        let album = await getAlbum(req.params.albumId);
+        verifyOwnership(res.locals.user, album);
+        album = await addImages(album, req.files.images);
+        album.save();
+        res.json(responseAlbum(album));
     }catch(e){next(e)}
 }
 
@@ -104,6 +116,42 @@ const createAlbum = (data, userId)=>{
 }
 
 /*
+ Save images to the server
+ Add image file names to the album
+
+ @param {Album} album - Album Object
+ @param {File or [File]} images - List of images uploaded
+ @return {[Object]} - List of Photo objects for the album
+ */
+const addImages = async(album, images)=>{
+    if(!images.length) images = [images];
+    const promises = [];
+
+    for(let i = 0; i < images.length; i++){
+        const uuid = newUuid();
+        const filename = `${uuid}.webp`;
+        promises.push(
+            sharp(images[i].data)
+                .resize({width: 1000})
+                .webp({quality: 75})
+                .toFile(`${global.cwd}/documents/${filename}`)
+        );
+        album.photos.push({
+            file: filename,
+            created: new Date(),
+            lastUpdated: new Date()
+        });
+    }
+
+    await Promise.all(promises);
+    return album;
+}
+
+const newUuid = ()=>{
+    return crypto.randomUUID();
+}
+
+/*
  Create an album object that is sent to the frontend
 
  @param {Album} album - Album Object
@@ -123,5 +171,6 @@ const responseAlbum = (album)=>{
 export {
     createRoute,
     updateRoute,
-    deleteRoute
+    deleteRoute,
+    addImagesRoute
 }

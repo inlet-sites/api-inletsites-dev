@@ -5,14 +5,15 @@ import auth from "../auth.js";
 import {
     createRoute,
     updateRoute,
-    deleteRoute
+    deleteRoute,
+    addImagesRoute
 } from "../controllers/album.js";
 
 const albumRoutes = (app)=>{
     app.post("/album", auth("album"), createRoute);
     app.put("/album/:albumId", auth("album"), updateRoute);
     app.delete("/album/:albumId", auth("album"), deleteRoute);
-    //add images
+    app.post("/album/:albumId/image", auth("album"), addImagesRoute);
     //remove images
     //update image (adds a description to an image)
 }
