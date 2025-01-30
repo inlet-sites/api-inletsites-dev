@@ -90,6 +90,7 @@ article{
         <a class="headSub" href="#createAlbum">Create</a>
         <a class="headSub" href="#updateAlbum">Update</a>
         <a class="headSub" href="#deleteAlbum">Delete</a>
+        <a class="headSub" href="#addImages">Add Images</a>
     </header>
 
     <article>
@@ -295,6 +296,27 @@ article{
                 <p class="name">success</p>
                 <p class="type">true</p>
                 <p class="propDesc">Always '{success: true}' if no error.</p>
+            </div>
+        </div>
+
+        <div id="addImages" class="route">
+            <h1>Add Images</h1>
+            <p class="url">POST /album/:albumId/image</p>
+            <p>User Auth Required (Album)</p>
+            <p class="description">Add one or more images to an album. Requires Multipart Form</p>
+            
+            <h3>Request Body</h3>
+            <div class="prop">
+                <p class="name">images</p>
+                <p class="type">File or [File]</p>
+                <p class="propDesc">One or more files to upload</p>
+            </div>
+
+            <h3>Response Body</h3>
+            <div class="prop">
+                <p class="name">N/A</p>
+                <p class="type"><a href="#album">Album</a></p>
+                <p class="propDesc">Full Album object</p>
             </div>
         </div>
     </article>
