@@ -45,6 +45,16 @@ const addImagesRoute = async (req, res, next)=>{
     }catch(e){next(e)}
 }
 
+const deleteImageRoute = async (req, res, next)=>{
+    try{
+        let album = await getAlbum(req.params.albumId);
+        verifyOwnership(res.locals.user, album);
+        album.photos = removeImage(album.photos, req.params.imageId);
+        await album.save();
+        res.json(responseAlbum(album));
+    }catch(e){next(e)}
+}
+
 /*
  Retrieve an album with the ID
 
@@ -147,6 +157,24 @@ const addImages = async(album, images)=>{
     return album;
 }
 
+/*
+ Remove a single image from an album
+ Also remove that image from the server
+
+ @param {[Object]} images - photos from an album
+ @param {String} imageId - ID of the image to remove
+ @return {[Object]} - Updated photos list for the album
+ */
+const removeImage = (images, imageId)=>{
+    for(let i = 0; i < images.length; i++){
+        if(images[i]._id.toString() === imageId){
+            unlink(`${global.cwd}/documents/${images[i].file}`);
+            images.splice(i, 1);
+            return images;
+        }
+    }
+}
+
 const newUuid = ()=>{
     return crypto.randomUUID();
 }
@@ -184,5 +212,6 @@ export {
     createRoute,
     updateRoute,
     deleteRoute,
-    addImagesRoute
+    addImagesRoute,
+    deleteImageRoute
 }
