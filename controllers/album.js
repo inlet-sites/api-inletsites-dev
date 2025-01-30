@@ -158,14 +158,26 @@ const newUuid = ()=>{
  @param {Object} - Object resembling album for the frontend
  */
 const responseAlbum = (album)=>{
-    return {
+    const responseAlbum = {
         id: album._id.toString(),
         name: album.name,
         description: album.description,
-        photos: album.photos,
+        photos: [],
         created: album.created,
         lastUpdated: album.lastUpdated
     };
+
+    for(let i = 0; i < album.photos.length; i++){
+        responseAlbum.photos.push({
+            id: album.photos[i]._id.toString(),
+            file: album.photos[i].file,
+            description: album.photos[i].description,
+            created: album.photos[i].created,
+            lastUpdated: album.photos[i].lastUpdated
+        });
+    }
+
+    return responseAlbum;
 }
 
 export {
