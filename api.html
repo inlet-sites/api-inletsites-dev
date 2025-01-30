@@ -91,6 +91,7 @@ article{
         <a class="headSub" href="#updateAlbum">Update</a>
         <a class="headSub" href="#deleteAlbum">Delete</a>
         <a class="headSub" href="#addImages">Add Images</a>
+        <a class="headSub" href="#deleteImage">Delete Image</a>
     </header>
 
     <article>
@@ -317,6 +318,20 @@ article{
                 <p class="name">N/A</p>
                 <p class="type"><a href="#album">Album</a></p>
                 <p class="propDesc">Full Album object</p>
+            </div>
+        </div>
+
+        <div id="deleteImage" class="route">
+            <h1>Delete Image</h1>
+            <p class="url">DELETE /album/:albumId/image/:imageId</p>
+            <p>User Auth Required (Album)</p>
+            <p class="description">Remove an image from an album</p>
+
+            <h3>Response Body</h3>
+            <div class="prop">
+                <p class="name">N/A</p>
+                <p class="type"><a href="#album">Album</a></p>
+                <p class="propDesc">Album object</p>
             </div>
         </div>
     </article>
