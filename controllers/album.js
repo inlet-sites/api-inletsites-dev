@@ -1,5 +1,6 @@
 import Album from "../models/album.js";
 
+import {HttpError} from "../HttpError.js";
 import validate from "../validation/album.js";
 import {unlink} from "node:fs/promises";
 import sharp from "sharp";
@@ -148,6 +149,7 @@ const addImages = async(album, images)=>{
         );
         album.photos.push({
             file: filename,
+            originalName: images[i].name,
             created: new Date(),
             lastUpdated: new Date()
         });
