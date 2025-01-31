@@ -87,6 +87,7 @@ article{
         <a class="headSub" href="#getToken">Get Token</a>
         <a class="headSub" href="#getUser">Get User</a>
         <a class="headMain" href="#album">Album</a>
+        <a class="headSub" href="#getAlbums">Get</a>
         <a class="headSub" href="#createAlbum">Create</a>
         <a class="headSub" href="#updateAlbum">Update</a>
         <a class="headSub" href="#deleteAlbum">Delete</a>
@@ -236,6 +237,19 @@ article{
                 <p class="name">created</p>
                 <p class="type">date</p>
                 <p class="propDesc">Date/Time album was created</p>
+            </div>
+        </div>
+
+        <div id="getAlbums" class="route">
+            <h1>Get Albums</h1>
+            <p class="url">GET /album/:userId</p>
+            <p class="description">Get all albums for a specific user</p>
+
+            <h3>Response Body</h3>
+            <div class="prop">
+                <p class="name">N/A</p>
+                <p class="type">List of <a href="#album">Album</a></p>
+                <p class="propDesc">List of albums of the user</p>
             </div>
         </div>
 

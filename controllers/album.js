@@ -6,6 +6,12 @@ import {unlink} from "node:fs/promises";
 import sharp from "sharp";
 import crypto from "crypto";
 
+const getRoute = async (req, res, next)=>{
+    try{
+        return null;
+    }catch(e){next(e)}
+}
+
 const createRoute = async (req, res, next)=>{
     try{
         validate(req.body);
@@ -211,6 +217,7 @@ const responseAlbum = (album)=>{
 }
 
 export {
+    getRoute,
     createRoute,
     updateRoute,
     deleteRoute,
