@@ -8,7 +8,8 @@ import crypto from "crypto";
 
 const getRoute = async (req, res, next)=>{
     try{
-        return null;
+        const albums = await Album.find({user: req.params.userId});
+        res.json(albums);
     }catch(e){next(e)}
 }
 
