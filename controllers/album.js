@@ -48,7 +48,7 @@ const addImagesRoute = async (req, res, next)=>{
         let album = await getAlbum(req.params.albumId);
         verifyOwnership(res.locals.user, album);
         album = await addImages(album, req.files.images);
-        album.save();
+        await album.save();
         res.json(responseAlbum(album));
     }catch(e){next(e)}
 }
@@ -58,6 +58,16 @@ const deleteImageRoute = async (req, res, next)=>{
         let album = await getAlbum(req.params.albumId);
         verifyOwnership(res.locals.user, album);
         album.photos = removeImage(album.photos, req.params.imageId);
+        await album.save();
+        res.json(responseAlbum(album));
+    }catch(e){next(e)}
+}
+
+const updateImageRoute = async (req, res, next)=>{
+    try{
+        const album = await getAlbum(req.params.albumId);
+        verifyOwnership(res.locals.user, album);
+        album.photos = updateImage(album.photos, req.params.imageId, req.body.description);
         await album.save();
         res.json(responseAlbum(album));
     }catch(e){next(e)}
@@ -182,8 +192,32 @@ const removeImage = (images, imageId)=>{
             return images;
         }
     }
+    throw new HttpError(400, "No image with that ID");
 }
 
+/*
+ Update the description of an image
+
+ @param {[Object]} images - Images list from an album
+ @param {String} imageId - ID of the image to update
+ @param {String} description - Description to update the image with
+ @return {[Object]} - Updated images list from the album
+ */
+const updateImage = (images, imageId, description)=>{
+    for(let i = 0; i < images.length; i++){
+        if(images[i]._id.toString() === imageId){
+            images[i].description = description;
+            return images;
+        }
+    }
+    throw new HttpError(400, "No image with that ID");
+}
+
+/*
+ Create a new UUID
+
+ @return {String} - UUID
+ */
 const newUuid = ()=>{
     return crypto.randomUUID();
 }
@@ -223,5 +257,6 @@ export {
     updateRoute,
     deleteRoute,
     addImagesRoute,
-    deleteImageRoute
+    deleteImageRoute,
+    updateImageRoute
 }
