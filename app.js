@@ -28,6 +28,10 @@ userRoutes(app);
 blogRoutes(app);
 albumRoutes(app);
 
+app.get("/document/:document", (req, res)=>{
+    res.sendFile(`${global.cwd}/documents/${req.params.document}`);
+});
+
 app.use(catchError);
 
 app.get("/", (req, res)=>{res.sendFile(`${import.meta.dirname}/api.html`)});
