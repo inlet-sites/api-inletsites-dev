@@ -111,6 +111,7 @@ const generateToken = (user)=>{
  */
 const responseUser = (user)=>{
     return {
+        id: user._id,
         name: user.name,
         email: user.email,
         permissions: user.permissions
