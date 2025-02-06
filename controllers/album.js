@@ -8,7 +8,15 @@ import crypto from "crypto";
 
 const getRoute = async (req, res, next)=>{
     try{
-        const albums = await Album.find({user: req.params.userId});
+        const albums = await Album.find({user: req.params.userId}).lean();
+        for(let i = 0; i < albums.length; i++){
+            albums[i].id = albums[i]._id;
+            delete albums[i]._id;
+            for(let j = 0; j < albums[i].photos.length; j++){
+                albums[i].photos[j].id = albums[i].photos[j]._id;
+                delete albums[i].photos[j]._id;
+            }
+        }
         res.json(albums);
     }catch(e){next(e)}
 }
