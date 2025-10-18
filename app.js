@@ -36,7 +36,4 @@ app.use(catchError);
 
 app.get("/", (req, res)=>{res.sendFile(`${import.meta.dirname}/api.html`)});
 
-if(process.env.NODE_ENV !== "production"){
-    app.listen(8000);
-}
-export default app;
+app.listen(8006);
